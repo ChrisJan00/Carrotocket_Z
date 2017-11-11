@@ -12,6 +12,8 @@ function Buttons.reset()
     for i = 1,10 do
         table.insert(Buttons.list, Buttons.spawnOne())
     end
+
+    Buttons.resetBlinkLogic()
 end
 
 function Buttons.loadButton(imgFile)
@@ -88,6 +90,8 @@ function Buttons.update(dt)
     for _,button in ipairs(Buttons.list) do
         button:update(dt)
     end
+
+    Buttons.updateBlink(dt)
 end
 
 function Buttons.draw()
@@ -112,6 +116,8 @@ function Buttons.pressAt(pos)
     if btn then
         Buttons.lastPressed = btn
         btn.isPressed = true
+
+        Buttons.blinkPressed(btn)
     end
 end
 
@@ -119,6 +125,60 @@ function Buttons.release()
     if Buttons.lastPressed then
         Buttons.lastPressed.isPressed = false
         Buttons.lastPressed = nil
+    end
+end
+
+-------------------------------
+
+function Buttons.resetBlinkLogic()
+    -- we want more and more buttons to blink over time
+    Buttons.blinkList = {}
+    Buttons.nonBlinkList = {}
+
+    for _,b in ipairs(Buttons.list) do
+        table.insert(Buttons.nonBlinkList, b)
+    end
+
+    -- so the period has to start hi, get smaller over time, but we want to breath in between so...
+    Buttons.blinkControl = {
+        timer = 0,
+        nextTimeout = 10,
+        amp = 10,
+    }
+
+end
+
+function Buttons.updateBlink(dt)
+    local bk = Buttons.blinkControl
+    bk.timer = bk.timer + dt
+    if bk.timer >= bk.nextTimeout then
+
+        -- reset blink control
+        bk.timer = 0
+        bk.amp = bk.amp * 0.95
+        bk.nextTimeout = (1.5 + bk.amp) * ((math.random() - 0.5) * 0.3 + 0.85)
+
+        -- choose botan
+        if #Buttons.nonBlinkList > 0 then
+            local nubut = table.remove(Buttons.nonBlinkList, math.random(#Buttons.nonBlinkList))
+            table.insert(Buttons.blinkList, nubut)
+            nubut.isBlinking = true
+        end
+    end
+
+end
+
+function Buttons.blinkPressed(btn)
+    if btn.isBlinking then
+        btn.isBlinking = false
+    end
+
+    for i=1,#Buttons.blinkList do
+        if Buttons.blinkList[i] == btn then
+            table.remove(Buttons.blinkList, i)
+            table.insert(Buttons.nonBlinkList, btn)
+            break
+        end
     end
 end
 
