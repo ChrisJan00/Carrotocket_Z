@@ -87,9 +87,11 @@ function Hand.keypressed(key)
     Hand.dir = Hand.dir:norm()
 
     if key == "space" and not Hand.pressing then
-        Hand.pressing = true
-        Hand.pushAnim:reset()
-        Buttons.pressAt(Hand.pos)
+        local btn = Buttons.pressAt(Hand.pos)
+        if btn and btn.isPressed then
+            Hand.pressing = true
+            Hand.pushAnim:reset()
+        end
     end
 
 end

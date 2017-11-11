@@ -8,13 +8,13 @@ function Cabbages.init()
             batch = love.graphics.newSpriteBatch( img, 1000 ),
             ndxs = {4,5,6},
             x = 0,
-            speed = 180,
+            speed = 200,
         },
         {
             batch = love.graphics.newSpriteBatch( img, 1000 ),
             ndxs = {1,2,3},
             x = 0,
-            speed = 210,
+            speed = 260,
         },
     }
 
@@ -53,6 +53,7 @@ function Cabbages.reset()
     end
 
     for li,l in ipairs(Cabbages.layers) do
+        -- taboo = {}
         l.batch:clear()
         for i=1,li * 3 + 2 do
             local f = l.ndxs[math.random(#l.ndxs)]

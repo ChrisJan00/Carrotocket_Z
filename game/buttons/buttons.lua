@@ -181,7 +181,8 @@ function Buttons.pressAt(pos)
 
     Buttons.release()
     local btn = Buttons.whichPressed(adjustedpos)
-    if btn then
+    -- if btn then
+    if btn and (btn.isBlinking or btn.autodestroy) then
         Buttons.lastPressed = btn
         btn.isPressed = true
         if btn.autodestroy then
@@ -190,6 +191,8 @@ function Buttons.pressAt(pos)
 
         Buttons.blinkPressed(btn)
     end
+
+    return btn
 end
 
 function Buttons.release()
