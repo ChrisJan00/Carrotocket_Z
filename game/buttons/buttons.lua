@@ -9,8 +9,8 @@ end
 function Buttons.reset()
     Buttons.list = {}
 
-    for i = 1,1 do
-        table.insert(Buttons.list, Buttons.spawn())
+    for i = 1,10 do
+        table.insert(Buttons.list, Buttons.spawnOne())
     end
 end
 
@@ -25,24 +25,41 @@ function Buttons.loadButton(imgFile)
 
     local buttonDef = {
         img = img,
-        w = w,
-        h = h,
+        size = Vector(w,h),
         sprites = sprites
     }
 
     table.insert(Buttons.refs, buttonDef)
 end
 
-function Buttons.spawn()
-        -- spawn button
+function Buttons.spawnOne()
+    local function collides(topleft, bottomrt)
+        local box = BoxFromVectors(topleft, bottomrt)
+        for _,b in ipairs(Buttons.list) do
+            if BoxFromVectors(b.pos, b.pos + b.size):intersects(box) then return true end
+        end
+        return false
+    end
+
+    local function getNewButtonPos(sz)
+        local pos = false
+        while not pos do
+            pos = Vector(math.random(400 - sz.x), math.random(172 - sz.y) + 128)
+            if collides(pos, pos+sz) then
+                pos = false
+            end
+        end
+        return pos
+    end
+
+    -- spawn button
     local ndx = math.random(#Buttons.refs)
     local ref = Buttons.refs[ndx]
+    local pos = getNewButtonPos(ref.size)
     local newButton = {
         img = ref.img,
-        x = 100,
-        y = 100,
-        w = ref.w,
-        h = ref.h,
+        pos = pos,
+        size = ref.size,
         sprites = ref.sprites,
         isPressed = false,
         isBlinking = false,
@@ -60,7 +77,7 @@ function Buttons.spawn()
             end
         end,
         draw = function(self)
-                love.graphics.draw(self.img, self.sprites[self.frame], self.x, self.y)
+                love.graphics.draw(self.img, self.sprites[self.frame], self.pos.x, self.pos.y)
             end,
         }
 
@@ -82,7 +99,7 @@ end
 
 function Buttons.whichPressed(pos)
     for _,button in ipairs(Buttons.list) do
-        if pos.x >= button.x and pos.x <= button.x + button.w and pos.y >= button.y and pos.y <= button.y + button.h then
+        if pos.x >= button.pos.x and pos.x <= button.pos.x + button.size.x and pos.y >= button.pos.y and pos.y <= button.pos.y + button.size.y then
             return button
         end
     end

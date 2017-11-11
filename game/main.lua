@@ -12,6 +12,7 @@ end
 
 function init()
     love.filesystem.load("lib/vector.lua")()
+    love.filesystem.load("lib/box.lua")()
     love.filesystem.load("buttons/anims.lua")()
     love.filesystem.load("buttons/buttons.lua")()
 
@@ -28,6 +29,11 @@ function initScreen()
 end
 
 function reset()
+    math.randomseed( os.time() )
+    for i=1,10 do
+        math.random()
+    end
+
     Buttons.reset()
 end
 
