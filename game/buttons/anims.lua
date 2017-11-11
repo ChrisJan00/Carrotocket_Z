@@ -2,14 +2,19 @@ Anims = Anims or {}
 
 local function animReset(self)
     self.timer = 0
-    self.frame = 0
+    self.frame = 1
 end
 
 local function animUpdate(self, dt)
     self.timer = self.timer + dt
+    local oldframe = self.frame
     while self.timer > self.frameDelay do
         self.timer = self.timer - self.frameDelay
         self.frame = (self.frame % self.frameCount) + 1
+    end
+
+    if self.onEndCallback and self.frame < oldframe then
+        self.onEndCallback()
     end
 end
 
@@ -30,6 +35,7 @@ local function animDraw(self, x, y)
     self.batch:clear()
     self.batch:add(self.sprites[self.frame])
     love.graphics.draw(self.batch, x, y)
+    -- love.graphics.draw(self.batch:getTexture(), self.sprites[self.frame], x, y)
 end
 
 function Anims.createWSprite(imgFile, fw, fh, frameDelay)

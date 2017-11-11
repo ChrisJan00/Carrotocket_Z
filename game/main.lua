@@ -16,17 +16,19 @@ function init()
     love.filesystem.load("buttons/anims.lua")()
     love.filesystem.load("buttons/buttons.lua")()
     love.filesystem.load("visor/visor.lua")()
+    love.filesystem.load("visor/hand.lua")()
 
     initScreen()
 
     Buttons.init()
     Visor.init()
+    Hand.init()
 end
 
 function initScreen()
     ScreenSize = Vector(400,300)
-    -- ViewSize = Vector(1200, 900)
-    ViewSize = Vector(800, 600)
+    ViewSize = Vector(1200, 900)
+    -- ViewSize = Vector(800, 600)
     -- ViewSize = Vector(400,300)
     if love.graphics.getWidth() ~= ViewSize.x or love.graphics.getHeight() ~= ViewSize.y then
         love.window.setMode(ViewSize.x,ViewSize.y)
@@ -42,11 +44,13 @@ function reset()
 
     Buttons.reset()
     Visor.reset()
+    Hand.reset()
 end
 
 function love.update(dt)
     Buttons.update(dt)
     Visor.update(dt)
+    Hand.update(dt)
 end
 
 function love.draw()
@@ -57,6 +61,7 @@ function love.draw()
 
         -- draw bottom
         Buttons.draw()
+        Hand.draw()
 
     love.graphics.pop()
 end
@@ -71,3 +76,17 @@ end
 
 function launchGameover()
 end
+
+function love.keypressed(key)
+    if key == "escape" then
+        love.event.push("quit")
+        return
+    end
+
+    Hand.keypressed(key)
+end
+
+function love.keyreleased(key)
+    Hand.keyreleased(key)
+end
+

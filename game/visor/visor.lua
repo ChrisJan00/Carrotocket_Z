@@ -8,7 +8,7 @@ function Visor.init()
             dest = 0,
             speed = 50,
             punish = 3,
-            reward = 30,
+            reward = 20,
             maximum = 136
         },
     }
@@ -48,7 +48,7 @@ function Visor.update(dt)
     local f = Visor.rocket.fall
 
     -- compute loss
-    f.dest = f.dest + f.punish * #Buttons.blinkList * dt
+    f.dest = math.min(f.dest + f.punish * #Buttons.blinkList * dt, f.maximum)
 
     -- animate fall
     if f.dest < f.current then
@@ -61,7 +61,7 @@ function Visor.update(dt)
         Buttons.updateVibration(f.current / f.maximum)
 
         -- game over?
-        if f.current > f.maximum then
+        if f.current >= f.maximum then
             launchGameover()
         end
     end
@@ -85,11 +85,5 @@ function Visor.draw()
     Visor.rocket.anim:draw(0, Visor.rocket.fall.current)
 
     love.graphics.setScissor()
-
-end
-
-function love.keypressed(key)
-    if key == "down" then Visor.rocket.fall.dest = Visor.rocket.fall.dest + 50 end
-    if key == "up" then Visor.rocket.fall.dest = Visor.rocket.fall.dest - 50 end
 
 end

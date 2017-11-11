@@ -16,11 +16,13 @@ function Buttons.init()
 
     Buttons.vibration = {
         amp = 0,
-        maximum = 25,
+        maximum = 15,
         last = Vector(0,0),
         frameCount = 2,
         frame = 0
     }
+
+    Buttons.bg = love.graphics.newImage("img/bottomBG.png")
 end
 
 function Buttons.reset()
@@ -36,8 +38,6 @@ function Buttons.reset()
         local newB =  Buttons.spawnOne()
         if newB then
             table.insert(Buttons.list, newB)
-        else
-            break
         end
     end
 
@@ -63,6 +63,7 @@ function Buttons.loadButton(imgFile)
 end
 
 function Buttons.spawnOne(desired)
+    local yofs = Buttons.vibration.maximum
     local function collides(topleft, bottomrt)
         local box = BoxFromVectors(topleft, bottomrt)
         for _,b in ipairs(Buttons.list) do
@@ -75,7 +76,7 @@ function Buttons.spawnOne(desired)
         local maxtries = 40
         local pos = false
         while not pos do
-            pos = Vector(math.random(400 - sz.x), math.random(172 - sz.y) + 128)
+            pos = Vector(math.random(400 - sz.x), math.random(172 - sz.y - yofs) + 128 + yofs)
             if collides(pos, pos+sz) then
                 pos = false
             end
@@ -130,9 +131,7 @@ function Buttons.update(dt)
 end
 
 function Buttons.draw()
-    love.graphics.setColor(32, 32, 32)
-    love.graphics.rectangle("fill",0,128,400,172)
-
+    love.graphics.setScissor(0, ViewSize.y * 128 / ScreenSize.y, ViewSize.x, ViewSize.y * 172 / ScreenSize.y)
     -- vibrate!
     love.graphics.push()
     Buttons.vibration.frame = Buttons.vibration.frame + 1
@@ -146,8 +145,8 @@ function Buttons.draw()
 
 
     -- button background
-    love.graphics.setColor(32, 32, 32)
-    love.graphics.rectangle("fill",-400,128,1200,172 + 200)
+    love.graphics.setColor(255,255,255)
+    love.graphics.draw(Buttons.bg, -100, 128 - (260 - 172) * 0.5)
 
     love.graphics.setColor(255,255,255)
     for _,button in ipairs(Buttons.list) do
@@ -155,6 +154,7 @@ function Buttons.draw()
     end
 
     love.graphics.pop()
+    love.graphics.setScissor()
 end
 
 function Buttons.whichPressed(pos)
@@ -214,7 +214,7 @@ function Buttons.updateBlink(dt)
         -- reset blink control
         bk.timer = 0
         bk.amp = bk.amp * 0.95
-        bk.nextTimeout = (1.5 + bk.amp) * ((math.random() - 0.5) * 0.3 + 0.85)
+        bk.nextTimeout = (0.5 + bk.amp) * ((math.random() - 0.5) * 0.3 + 0.85)
 
         -- choose botan
         if #Buttons.nonBlinkList > 0 then
