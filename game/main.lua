@@ -11,46 +11,56 @@ function love.livereload()
 end
 
 function init()
+    rerandomize()
     love.filesystem.load("lib/vector.lua")()
     love.filesystem.load("lib/box.lua")()
     love.filesystem.load("buttons/anims.lua")()
     love.filesystem.load("buttons/buttons.lua")()
     love.filesystem.load("visor/visor.lua")()
     love.filesystem.load("visor/hand.lua")()
+    love.filesystem.load("visor/cabbages.lua")()
+    love.filesystem.load("general/general.lua")()
 
     initScreen()
 
     Buttons.init()
     Visor.init()
     Hand.init()
+    General.init()
 end
 
 function initScreen()
     ScreenSize = Vector(400,300)
-    ViewSize = Vector(1200, 900)
     -- ViewSize = Vector(800, 600)
-    -- ViewSize = Vector(400,300)
+    ViewSize = Vector(400,300)
+    ViewSize = Vector(1200, 900)
     if love.graphics.getWidth() ~= ViewSize.x or love.graphics.getHeight() ~= ViewSize.y then
         love.window.setMode(ViewSize.x,ViewSize.y)
     end
     love.graphics.setDefaultFilter("nearest", "nearest")
 end
 
-function reset()
+function rerandomize()
     math.randomseed( os.time() )
     for i=1,10 do
         math.random()
     end
+end
+
+function reset()
+    rerandomize()
 
     Buttons.reset()
     Visor.reset()
     Hand.reset()
+    General.reset()
 end
 
 function love.update(dt)
     Buttons.update(dt)
     Visor.update(dt)
     Hand.update(dt)
+    General.update(dt)
 end
 
 function love.draw()
@@ -62,6 +72,8 @@ function love.draw()
         -- draw bottom
         Buttons.draw()
         Hand.draw()
+
+        General.drawOverlay()
 
     love.graphics.pop()
 end

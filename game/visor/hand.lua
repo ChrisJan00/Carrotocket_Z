@@ -7,9 +7,9 @@ function Hand.init()
 
     Hand.ofs = Vector(64, 24)
     Hand.dir = Vector(0, 0)
-    Hand.speed = 80
+    Hand.speed = 120
     Hand.vel = Vector(0,0)
-    Hand.inertia = 0.9
+    Hand.inertia = 0.8
 
     Hand.pressing = false
 
@@ -37,8 +37,8 @@ function Hand.update(dt)
         Hand.pos.x = 400
     end
 
-    if Hand.pos.y < 128 then
-        Hand.pos.y = 128
+    if Hand.pos.y < 132 then
+        Hand.pos.y = 132
     end
 
     if Hand.pos.y > 300 then

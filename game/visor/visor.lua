@@ -26,10 +26,13 @@ function Visor.init()
         l.w = l.img:getWidth()
     end
 
+    Cabbages.init()
+
 end
 
 function Visor.reset()
     Visor.rocket.anim:reset()
+    Cabbages.reset()
 end
 
 function Visor.update(dt)
@@ -66,6 +69,9 @@ function Visor.update(dt)
         end
     end
 
+
+    Cabbages.update(dt)
+
 end
 
 function Visor.deblinked()
@@ -82,7 +88,11 @@ function Visor.draw()
         love.graphics.draw(l.img, l.x)
     end
 
+    Cabbages.draw()
+
     Visor.rocket.anim:draw(0, Visor.rocket.fall.current)
+
+
 
     love.graphics.setScissor()
 

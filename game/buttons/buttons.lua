@@ -16,7 +16,10 @@ function Buttons.init()
 
     Buttons.vibration = {
         amp = 0,
-        maximum = 15,
+        phase = 0,
+        freq = 0.01,
+        -- maximum = 15,
+        maximum = 1,
         last = Vector(0,0),
         frameCount = 2,
         frame = 0
@@ -200,8 +203,8 @@ function Buttons.resetBlinkLogic()
     -- so the period has to start hi, get smaller over time, but we want to breath in between so...
     Buttons.blinkControl = {
         timer = 0,
-        nextTimeout = 10,
-        amp = 10,
+        nextTimeout = 5,
+        amp = 5,
     }
 
 end
@@ -213,7 +216,7 @@ function Buttons.updateBlink(dt)
 
         -- reset blink control
         bk.timer = 0
-        bk.amp = bk.amp * 0.95
+        bk.amp = bk.amp * 0.92
         bk.nextTimeout = (0.5 + bk.amp) * ((math.random() - 0.5) * 0.3 + 0.85)
 
         -- choose botan
