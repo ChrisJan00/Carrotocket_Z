@@ -15,17 +15,22 @@ function init()
     love.filesystem.load("lib/box.lua")()
     love.filesystem.load("buttons/anims.lua")()
     love.filesystem.load("buttons/buttons.lua")()
+    love.filesystem.load("visor/visor.lua")()
 
     initScreen()
 
     Buttons.init()
+    Visor.init()
 end
 
 function initScreen()
     ScreenSize = Vector(400,300)
-    if love.graphics.getWidth() ~= 400 or love.graphics.getHeight() ~= 300 then
-        love.window.setMode(400,300)
+    ViewSize = Vector(1200, 900)
+    -- ViewSize = Vector(400,300)
+    if love.graphics.getWidth() ~= ViewSize.x or love.graphics.getHeight() ~= ViewSize.y then
+        love.window.setMode(ViewSize.x,ViewSize.y)
     end
+    love.graphics.setDefaultFilter("nearest", "nearest")
 end
 
 function reset()
@@ -35,27 +40,32 @@ function reset()
     end
 
     Buttons.reset()
+    Visor.reset()
 end
 
 function love.update(dt)
     Buttons.update(dt)
+    Visor.update(dt)
 end
 
 function love.draw()
-    -- draw top
-    love.graphics.setColor(128,128,128)
-    love.graphics.rectangle("fill",0,0,400,128)
+    love.graphics.push()
+    love.graphics.scale(ViewSize.x / ScreenSize.x, ViewSize.y / ScreenSize.y)
+        -- draw top
+        Visor.draw()
 
-    -- draw bottom
-    love.graphics.setColor(32, 32, 32)
-    love.graphics.rectangle("fill",0,128,400,172)
+        -- draw bottom
+        love.graphics.setColor(32, 32, 32)
+        love.graphics.rectangle("fill",0,128,400,172)
 
 
-    Buttons.draw()
+        Buttons.draw()
+
+    love.graphics.pop()
 end
 
 function love.mousepressed(x,y)
-    Buttons.pressAt(Vector(x,y))
+    Buttons.pressAt(Vector(x,y) ^ ScreenSize / ViewSize)
 end
 
 function love.mousereleased(x,y)
