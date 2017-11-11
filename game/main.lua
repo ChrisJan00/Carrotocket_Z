@@ -90,11 +90,11 @@ function love.draw()
 end
 
 function love.mousepressed(x,y)
-    Buttons.pressAt(Vector(x,y) ^ ScreenSize / ViewSize)
+    -- Buttons.pressAt(Vector(x,y) ^ ScreenSize / ViewSize)
 end
 
 function love.mousereleased(x,y)
-    Buttons.release()
+    -- Buttons.release()
 end
 
 

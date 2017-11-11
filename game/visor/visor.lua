@@ -7,8 +7,8 @@ function Visor.init()
             current = 0,
             dest = 0,
             speed = 50,
-            punish = 3,
-            reward = 20,
+            punish = 10,
+            reward = 30,
             maximum = 136
         },
     }
@@ -32,6 +32,15 @@ end
 
 function Visor.reset()
     Visor.rocket.anim:reset()
+    Visor.rocket.fall =  {
+            current = 0,
+            dest = 0,
+            speed = 50,
+            punish = 10,
+            reward = 30,
+            maximum = 136
+        }
+
     Cabbages.reset()
 end
 
