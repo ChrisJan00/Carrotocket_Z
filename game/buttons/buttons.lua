@@ -14,23 +14,25 @@ function Buttons.init()
     Buttons.loadButton("img/butt4_var1.png")
     Buttons.loadButton("img/butt4_var2.png")
 
-    Buttons.vibration = {
-        amp = 0,
-        phase = 0,
-        freq = 0.01,
-        -- maximum = 15,
-        maximum = 1,
-        last = Vector(0,0),
-        frameCount = 2,
-        frame = 0
-    }
 
     Buttons.bg = love.graphics.newImage("img/bottomBG.png")
 end
 
 function Buttons.reset()
     Buttons.list = {}
-    Buttons.vibration.amp = 0
+    Buttons.vibration = {
+        amp = 0,
+        phase = 0,
+        minFreq = 8,
+        currFreq = 8,
+        maxFreq = 24,
+        maximum = 10,
+        -- maximum = 1,
+        last = Vector(0,0),
+        frameCount = 2,
+        frame = 0
+    }
+
 
     -- special: insert button 1, and then not again
     table.insert(Buttons.list, Buttons.spawnOne(1))
@@ -132,18 +134,22 @@ function Buttons.update(dt)
     end
 
     Buttons.updateBlink(dt)
+    Buttons.updateVibration(dt)
 end
 
 function Buttons.draw()
     love.graphics.setScissor(0, ViewSize.y * 128 / ScreenSize.y, ViewSize.x, ViewSize.y * 172 / ScreenSize.y)
     -- vibrate!
     love.graphics.push()
-    Buttons.vibration.frame = Buttons.vibration.frame + 1
-    if Buttons.vibration.frame >= Buttons.vibration.frameCount then
-        local a = math.floor(Buttons.vibration.amp)
-        Buttons.vibration.last = Vector(math.random(a*2) - a, math.random(a*2) - a)
-        Buttons.vibration.frame = 0
-    end
+    -- Buttons.vibration.frame = Buttons.vibration.frame + 1
+    -- if Buttons.vibration.frame >= Buttons.vibration.frameCount then
+    --     local a = math.max(0, math.floor(Buttons.vibration.amp * math.sin(Buttons.vibration.phase)))
+    --     Buttons.vibration.last = Vector(math.random(a*2) - a, math.random(a*2) - a)
+    --     Buttons.vibration.frame = 0
+    -- end
+
+    local a = Buttons.vibration.amp * 0.7 + Buttons.vibration.maximum * 0.3
+    Buttons.vibration.last = VectorFromPolar(a, Buttons.vibration.phase)
 
     love.graphics.translate(Buttons.vibration.last.x, Buttons.vibration.last.y)
 
@@ -171,8 +177,10 @@ function Buttons.whichPressed(pos)
 end
 
 function Buttons.pressAt(pos)
+    local adjustedpos = pos - Buttons.vibration.last
+
     Buttons.release()
-    local btn = Buttons.whichPressed(pos)
+    local btn = Buttons.whichPressed(adjustedpos)
     if btn then
         Buttons.lastPressed = btn
         btn.isPressed = true
@@ -249,6 +257,13 @@ function Buttons.blinkPressed(btn)
     end
 end
 
-function Buttons.updateVibration(percent)
-    Buttons.vibration.amp = Buttons.vibration.maximum * percent
+function Buttons.setCurrentVibration(percent)
+    local v = Buttons.vibration
+    v.amp = v.maximum * percent
+    v.currFreq = (v.maxFreq - v.minFreq) * percent + v.minFreq
+end
+
+function Buttons.updateVibration(dt)
+    local v  = Buttons.vibration
+    v.phase = v.phase + (v.currFreq * dt) % (2 * math.pi)
 end

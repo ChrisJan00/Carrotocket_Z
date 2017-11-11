@@ -22,6 +22,8 @@ function Hand.init()
 end
 
 function Hand.reset()
+    Hand.dir = Vector(0, 0)
+    Hand.vel = Vector(0,0)
 end
 
 function Hand.update(dt)

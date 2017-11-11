@@ -7,9 +7,9 @@ function Visor.init()
             current = 0,
             dest = 0,
             speed = 50,
-            punish = 10,
-            reward = 30,
-            maximum = 136
+            punish = 5,
+            reward = 25,
+            maximum = 116
         },
     }
 
@@ -36,8 +36,8 @@ function Visor.reset()
             current = 0,
             dest = 0,
             speed = 50,
-            punish = 10,
-            reward = 30,
+            punish = 3,
+            reward = 20,
             maximum = 136
         }
 
@@ -66,11 +66,11 @@ function Visor.update(dt)
     if f.dest < f.current then
         -- raising
         f.current = math.max(f.current - f.speed * dt, f.dest)
-        Buttons.updateVibration(f.current / f.maximum)
+        Buttons.setCurrentVibration(f.current / f.maximum)
     elseif f.dest > f.current then
         -- falling
         f.current = math.min(f.current + f.speed * dt, f.dest)
-        Buttons.updateVibration(f.current / f.maximum)
+        Buttons.setCurrentVibration(f.current / f.maximum)
 
         -- game over?
         if f.current >= f.maximum then
