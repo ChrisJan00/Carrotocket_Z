@@ -153,6 +153,12 @@ function Buttons.draw()
 
     love.graphics.translate(Buttons.vibration.last.x, Buttons.vibration.last.y)
 
+    -- if Hand.pressing then
+    --     -- extra vibration caused by epic press
+    --     local aa = 2
+    --     love.graphics.translate( math.random(aa*2) - a, math.random(aa*2) - a)
+    -- end
+
 
     -- button background
     love.graphics.setColor(255,255,255)
