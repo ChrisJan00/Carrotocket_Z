@@ -56,10 +56,6 @@ function love.draw()
         Visor.draw()
 
         -- draw bottom
-        love.graphics.setColor(32, 32, 32)
-        love.graphics.rectangle("fill",0,128,400,172)
-
-
         Buttons.draw()
 
     love.graphics.pop()
@@ -71,4 +67,7 @@ end
 
 function love.mousereleased(x,y)
     Buttons.release()
+end
+
+function launchGameover()
 end

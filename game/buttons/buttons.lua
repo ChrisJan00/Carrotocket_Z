@@ -9,10 +9,19 @@ function Buttons.init()
     Buttons.loadButton("img/butt2_sheet_placeholder.png")
     Buttons.loadButton("img/butt3_sheet_placeholder.png")
     Buttons.loadButton("img/butt4_sheet_placeholder.png")
+
+    Buttons.vibration = {
+        amp = 0,
+        maximum = 25,
+        last = Vector(0,0),
+        frameCount = 2,
+        frame = 0
+    }
 end
 
 function Buttons.reset()
     Buttons.list = {}
+    Buttons.vibration.amp = 0
 
     -- special: insert button 1, and then not again
     table.insert(Buttons.list, Buttons.spawnOne(1))
@@ -87,7 +96,7 @@ function Buttons.spawnOne(desired)
         sprites = ref.sprites,
         isPressed = false,
         isBlinking = false,
-        anim = Anims.create(0.3, 6),
+        anim = Anims.create(0.15, 6),
         frame = 1,
 
         update = function(self, dt)
@@ -117,10 +126,31 @@ function Buttons.update(dt)
 end
 
 function Buttons.draw()
+    love.graphics.setColor(32, 32, 32)
+    love.graphics.rectangle("fill",0,128,400,172)
+
+    -- vibrate!
+    love.graphics.push()
+    Buttons.vibration.frame = Buttons.vibration.frame + 1
+    if Buttons.vibration.frame >= Buttons.vibration.frameCount then
+        local a = math.floor(Buttons.vibration.amp)
+        Buttons.vibration.last = Vector(math.random(a*2) - a, math.random(a*2) - a)
+        Buttons.vibration.frame = 0
+    end
+
+    love.graphics.translate(Buttons.vibration.last.x, Buttons.vibration.last.y)
+
+
+    -- button background
+    love.graphics.setColor(32, 32, 32)
+    love.graphics.rectangle("fill",-400,128,1200,172 + 200)
+
     love.graphics.setColor(255,255,255)
     for _,button in ipairs(Buttons.list) do
         button:draw()
     end
+
+    love.graphics.pop()
 end
 
 function Buttons.whichPressed(pos)
@@ -187,6 +217,7 @@ function Buttons.updateBlink(dt)
             local nubut = table.remove(Buttons.nonBlinkList, math.random(#Buttons.nonBlinkList))
             table.insert(Buttons.blinkList, nubut)
             nubut.isBlinking = true
+            nubut.anim:reset()
         end
     end
 
@@ -195,6 +226,7 @@ end
 function Buttons.blinkPressed(btn)
     if btn.isBlinking then
         btn.isBlinking = false
+        Visor.deblinked()
     end
 
     for i=1,#Buttons.blinkList do
@@ -206,3 +238,6 @@ function Buttons.blinkPressed(btn)
     end
 end
 
+function Buttons.updateVibration(percent)
+    Buttons.vibration.amp = Buttons.vibration.maximum * percent
+end
