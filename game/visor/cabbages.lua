@@ -6,13 +6,13 @@ function Cabbages.init()
     Cabbages.layers = {
         {
             batch = love.graphics.newSpriteBatch( img, 1000 ),
-            ndxs = {1,2,5,6},
+            ndxs = {4,5,6},
             x = 0,
             speed = 180,
         },
         {
             batch = love.graphics.newSpriteBatch( img, 1000 ),
-            ndxs = {3,4},
+            ndxs = {1,2,3},
             x = 0,
             speed = 210,
         },
@@ -74,10 +74,17 @@ function Cabbages.update(dt)
     end
 end
 
-function Cabbages.draw()
+function Cabbages.drawBack()
     love.graphics.setColor(255,255,255)
-    for _,l in ipairs(Cabbages.layers) do
-        love.graphics.draw(l.batch, l.x)
-        love.graphics.draw(l.batch, l.x + 400)
-    end
+        l = Cabbages.layers[1]
+    love.graphics.draw(l.batch, l.x)
+    love.graphics.draw(l.batch, l.x + 400)
+
+end
+
+function Cabbages.drawFront()
+    love.graphics.setColor(255,255,255)
+    l = Cabbages.layers[2]
+    love.graphics.draw(l.batch, l.x)
+    love.graphics.draw(l.batch, l.x + 400)
 end

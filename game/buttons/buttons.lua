@@ -36,6 +36,7 @@ function Buttons.reset()
     table.insert(Buttons.list, Buttons.spawnOne(1))
     Buttons.list[1].pos.x = 200 - 64
     Buttons.list[1].pos.y = (172-96) / 2 + 128
+    Buttons.list[1].autodestroy = true
 
     for i = 1,20 do
         local newB =  Buttons.spawnOne()
@@ -175,6 +176,9 @@ function Buttons.pressAt(pos)
     if btn then
         Buttons.lastPressed = btn
         btn.isPressed = true
+        if btn.autodestroy then
+            General.doGameover()
+        end
 
         Buttons.blinkPressed(btn)
     end

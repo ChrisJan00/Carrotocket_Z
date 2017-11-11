@@ -57,23 +57,34 @@ function reset()
 end
 
 function love.update(dt)
-    Buttons.update(dt)
-    Visor.update(dt)
-    Hand.update(dt)
-    General.update(dt)
+    if General.gameEnded then
+        General.update(dt)
+    else
+        Buttons.update(dt)
+        Visor.update(dt)
+        Hand.update(dt)
+        General.update(dt)
+    end
 end
 
 function love.draw()
     love.graphics.push()
     love.graphics.scale(ViewSize.x / ScreenSize.x, ViewSize.y / ScreenSize.y)
-        -- draw top
-        Visor.draw()
 
-        -- draw bottom
-        Buttons.draw()
-        Hand.draw()
+        if General.gameEnded then
+            General.drawGameOver()
+        else
+            -- draw top
+            Visor.draw()
 
-        General.drawOverlay()
+            -- draw bottom
+            Buttons.draw()
+            Hand.draw()
+
+            General.drawOverlay()
+
+            General.drawGameOver()
+        end
 
     love.graphics.pop()
 end
@@ -86,8 +97,6 @@ function love.mousereleased(x,y)
     Buttons.release()
 end
 
-function launchGameover()
-end
 
 function love.keypressed(key)
     if key == "escape" then
@@ -95,7 +104,14 @@ function love.keypressed(key)
         return
     end
 
-    Hand.keypressed(key)
+    if General.gameEnded then
+        reset()
+        return
+    end
+
+    if not General.showGameover then
+        Hand.keypressed(key)
+    end
 end
 
 function love.keyreleased(key)

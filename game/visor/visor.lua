@@ -65,7 +65,7 @@ function Visor.update(dt)
 
         -- game over?
         if f.current >= f.maximum then
-            launchGameover()
+            General.doGameover()
         end
     end
 
@@ -88,10 +88,11 @@ function Visor.draw()
         love.graphics.draw(l.img, l.x)
     end
 
-    Cabbages.draw()
+    Cabbages.drawBack()
 
     Visor.rocket.anim:draw(0, Visor.rocket.fall.current)
 
+    Cabbages.drawFront()
 
 
     love.graphics.setScissor()
