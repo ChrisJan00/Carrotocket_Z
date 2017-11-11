@@ -3,14 +3,29 @@ Buttons = Buttons or {}
 function Buttons.init()
     Buttons.refs = {}
 
-    Buttons.loadButton("img/example_button.png")
+    -- special: button 1 is destruction!
+    Buttons.loadButton("img/bigbutton.png")
+    Buttons.loadButton("img/butt1_sheet_placeholder.png")
+    Buttons.loadButton("img/butt2_sheet_placeholder.png")
+    Buttons.loadButton("img/butt3_sheet_placeholder.png")
+    Buttons.loadButton("img/butt4_sheet_placeholder.png")
 end
 
 function Buttons.reset()
     Buttons.list = {}
 
-    for i = 1,10 do
-        table.insert(Buttons.list, Buttons.spawnOne())
+    -- special: insert button 1, and then not again
+    table.insert(Buttons.list, Buttons.spawnOne(1))
+    Buttons.list[1].pos.x = 200 - 64
+    Buttons.list[1].pos.y = (172-96) / 2 + 128
+
+    for i = 1,20 do
+        local newB =  Buttons.spawnOne()
+        if newB then
+            table.insert(Buttons.list, newB)
+        else
+            break
+        end
     end
 
     Buttons.resetBlinkLogic()
@@ -34,7 +49,7 @@ function Buttons.loadButton(imgFile)
     table.insert(Buttons.refs, buttonDef)
 end
 
-function Buttons.spawnOne()
+function Buttons.spawnOne(desired)
     local function collides(topleft, bottomrt)
         local box = BoxFromVectors(topleft, bottomrt)
         for _,b in ipairs(Buttons.list) do
@@ -44,20 +59,27 @@ function Buttons.spawnOne()
     end
 
     local function getNewButtonPos(sz)
+        local maxtries = 40
         local pos = false
         while not pos do
             pos = Vector(math.random(400 - sz.x), math.random(172 - sz.y) + 128)
             if collides(pos, pos+sz) then
                 pos = false
             end
+            maxtries = maxtries - 1
+            if maxtries <= 0 then
+                return false
+            end
         end
         return pos
     end
 
     -- spawn button
-    local ndx = math.random(#Buttons.refs)
+    local ndx = desired or (1 + math.random(#Buttons.refs - 1))
     local ref = Buttons.refs[ndx]
     local pos = getNewButtonPos(ref.size)
+    if not pos then return false end
+
     local newButton = {
         img = ref.img,
         pos = pos,
@@ -135,7 +157,9 @@ function Buttons.resetBlinkLogic()
     Buttons.blinkList = {}
     Buttons.nonBlinkList = {}
 
-    for _,b in ipairs(Buttons.list) do
+    -- skip button 1 (destruction)
+    for i = 2,#Buttons.list do
+        local b = Buttons.list[i]
         table.insert(Buttons.nonBlinkList, b)
     end
 
