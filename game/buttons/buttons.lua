@@ -5,10 +5,14 @@ function Buttons.init()
 
     -- special: button 1 is destruction!
     Buttons.loadButton("img/bigbutton.png")
-    Buttons.loadButton("img/butt1_sheet_placeholder.png")
-    Buttons.loadButton("img/butt2_sheet_placeholder.png")
-    Buttons.loadButton("img/butt3_sheet_placeholder.png")
-    Buttons.loadButton("img/butt4_sheet_placeholder.png")
+    Buttons.loadButton("img/butt1_var1.png")
+    Buttons.loadButton("img/butt1_var2.png")
+    Buttons.loadButton("img/butt2_sheet_var1.png")
+    Buttons.loadButton("img/butt2_sheet_var2.png")
+    Buttons.loadButton("img/butt3_var1.png")
+    Buttons.loadButton("img/butt3_var2.png")
+    Buttons.loadButton("img/butt4_var1.png")
+    Buttons.loadButton("img/butt4_var2.png")
 
     Buttons.vibration = {
         amp = 0,
