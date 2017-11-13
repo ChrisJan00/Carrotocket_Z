@@ -3,7 +3,7 @@ General = General or {}
 function General.init()
     General.overlay = love.graphics.newImage("img/overlay2.png")
 
-    General.gameoverAnim = Anims.createWSprite("img/sheet_explosiongameover.png", 400, 300, 0.05)
+    General.gameoverAnim = Anims.createWSprite("img/explosion_gameover.png", 400, 300, 0.05, 17)
     General.gameoverStatic = love.graphics.newImage("img/gameover.png")
     General.gameoverAnim.onEndCallback = function()
         General.animGameover = false

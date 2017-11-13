@@ -38,7 +38,7 @@ local function animDraw(self, x, y)
     -- love.graphics.draw(self.batch:getTexture(), self.sprites[self.frame], x, y)
 end
 
-function Anims.createWSprite(imgFile, fw, fh, frameDelay)
+function Anims.createWSprite(imgFile, fw, fh, frameDelay, maxframes)
     local img = love.graphics.newImage(imgFile)
     local batch = love.graphics.newSpriteBatch( img, 1000 )
     local sprites = {}
@@ -48,6 +48,7 @@ function Anims.createWSprite(imgFile, fw, fh, frameDelay)
 
     for y=0,yc-1 do
         for x=0,xc-1 do
+            if maxframes and maxframes <= #sprites then break end
             table.insert(sprites,
                 love.graphics.newQuad(x*fw, y*fh, fw, fh, img:getWidth(), img:getHeight()))
         end
