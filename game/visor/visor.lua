@@ -28,6 +28,25 @@ function Visor.init()
 
     Cabbages.init()
 
+    -- Visor.stripes = {
+    --     Anims.createWSprite("img/speedstripe1.png", 400, 20, 0.05),
+    --     Anims.createWSprite("img/speedstripe2.png", 400, 20, 0.05),
+    --     Anims.createWSprite("img/speedstripe1.png", 400, 20, 0.05),
+    --     Anims.createWSprite("img/speedstripe2.png", 400, 20, 0.05),
+    --     Anims.createWSprite("img/speedstripe1.png", 400, 20, 0.05),
+    --     Anims.createWSprite("img/speedstripe2.png", 400, 20, 0.05),
+
+    --     resetTimer = function()
+    --         Visor.stripes.timer = 0
+    --         Visor.stripes.delay = math.random()*0.8 + 0.05
+    --     end
+    -- }
+    -- for i=1,#Visor.stripes do
+    --     Visor.stripes[i].onEndCallback = function(self)
+    --         self.visible = false
+    --     end
+    -- end
+
 end
 
 function Visor.reset()
@@ -42,6 +61,12 @@ function Visor.reset()
         }
 
     Cabbages.reset()
+
+    -- for _,stripe in ipairs(Visor.stripes) do
+    --     stripe.visible = false
+    -- end
+
+    -- Visor.stripes.resetTimer()
 end
 
 function Visor.update(dt)
@@ -80,7 +105,7 @@ function Visor.update(dt)
 
 
     Cabbages.update(dt)
-
+    -- Visor.updateStripes(dt)
 end
 
 function Visor.deblinked()
@@ -103,7 +128,43 @@ function Visor.draw()
 
     Cabbages.drawFront()
 
+    -- Visor.drawStripes()
 
     love.graphics.setScissor()
-
 end
+
+-- function Visor.updateStripes(dt)
+--     for _,stripe in ipairs(Visor.stripes) do
+--         if stripe.visible then
+--             stripe:update(dt)
+--         end
+--     end
+
+--     Visor.stripes.timer = Visor.stripes.timer + dt
+--     if Visor.stripes.timer >= Visor.stripes.delay then
+--         local pool = {}
+--         for i = 1,#Visor.stripes do
+--             if not Visor.stripes[i].visible then
+--                 table.insert(pool, i)
+--             end
+--         end
+
+--         if #pool > 0 then
+--             local ndx = pool[math.random(#pool)]
+--             Visor.stripes[ndx].visible = true
+--             Visor.stripes[ndx]:reset()
+--             Visor.stripes[ndx].y = math.random(128 - 20)
+--         end
+
+--         Visor.stripes.resetTimer()
+--     end
+-- end
+
+-- function Visor.drawStripes()
+--     -- love.graphics.setColor(255,255,255,128)
+--     for _,stripe in ipairs(Visor.stripes) do
+--         if stripe.visible then
+--             stripe:draw(0, stripe.y)
+--         end
+--     end
+-- end

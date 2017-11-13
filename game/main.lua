@@ -37,6 +37,7 @@ function initScreen()
     if love.graphics.getWidth() ~= ViewSize.x or love.graphics.getHeight() ~= ViewSize.y then
         love.window.setMode(ViewSize.x,ViewSize.y)
     end
+    love.window.setTitle("Carrotocket Z")
     love.graphics.setDefaultFilter("nearest", "nearest")
 end
 

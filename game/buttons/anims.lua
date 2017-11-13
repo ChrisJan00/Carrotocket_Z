@@ -14,7 +14,7 @@ local function animUpdate(self, dt)
     end
 
     if self.onEndCallback and self.frame < oldframe then
-        self.onEndCallback()
+        self.onEndCallback(self)
     end
 end
 

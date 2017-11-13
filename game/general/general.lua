@@ -13,7 +13,6 @@ function General.init()
         General.showGameoverStatic = true
         General.gameEnded = true
     end
-
 end
 
 function General.reset()
@@ -41,6 +40,7 @@ end
 
 function General.draw()
 end
+
 
 function General.drawGameOver()
     -- if General.done then
