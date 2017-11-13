@@ -32,7 +32,6 @@ function General.doGameover()
 end
 
 function General.update(dt)
-    -- General.timer = General.timer - dt
 
     if General.animGameover then
         General.gameoverAnim:update(dt)
@@ -48,10 +47,6 @@ end
 
 
 function General.drawGameOver()
-    -- if General.done then
-    --     love.graphics.setColor(255,255,255)
-    --     love.graphics.draw(General.gameover)
-    -- end
 
     love.graphics.setColor(255,255,255)
     if General.showGameover then

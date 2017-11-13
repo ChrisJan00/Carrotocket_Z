@@ -29,9 +29,9 @@ end
 
 function initScreen()
     ScreenSize = Vector(400,300)
-    ViewSize = Vector(400,300)
-    -- ViewSize = Vector(800, 600)
-    ViewSize = Vector(1200, 900)
+    -- ViewSize = Vector(400,300)
+    ViewSize = Vector(800, 600)
+    -- ViewSize = Vector(1200, 900)
     if love.graphics.getWidth() ~= ViewSize.x or love.graphics.getHeight() ~= ViewSize.y then
         love.window.setMode(ViewSize.x,ViewSize.y)
     end

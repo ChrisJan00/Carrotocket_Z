@@ -141,24 +141,11 @@ function Buttons.draw()
     love.graphics.setScissor(0, ViewSize.y * 128 / ScreenSize.y, ViewSize.x, ViewSize.y * 172 / ScreenSize.y)
     -- vibrate!
     love.graphics.push()
-    -- Buttons.vibration.frame = Buttons.vibration.frame + 1
-    -- if Buttons.vibration.frame >= Buttons.vibration.frameCount then
-    --     local a = math.max(0, math.floor(Buttons.vibration.amp * math.sin(Buttons.vibration.phase)))
-    --     Buttons.vibration.last = Vector(math.random(a*2) - a, math.random(a*2) - a)
-    --     Buttons.vibration.frame = 0
-    -- end
 
     local a = Buttons.vibration.amp * 0.7 + Buttons.vibration.maximum * 0.3
     Buttons.vibration.last = VectorFromPolar(a, Buttons.vibration.phase)
 
     love.graphics.translate(Buttons.vibration.last.x, Buttons.vibration.last.y)
-
-    -- if Hand.pressing then
-    --     -- extra vibration caused by epic press
-    --     local aa = 2
-    --     love.graphics.translate( math.random(aa*2) - a, math.random(aa*2) - a)
-    -- end
-
 
     -- button background
     love.graphics.setColor(255,255,255)

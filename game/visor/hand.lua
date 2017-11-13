@@ -3,8 +3,6 @@ Hand = Hand or {}
 function Hand.init()
     Hand.pos = Vector(200, 128 + 172 / 2)
 
-    Hand.img = love.graphics.newImage("img/placeholder-hand.png")
-
     Hand.ofs = Vector(64, 24)
     Hand.dir = Vector(0, 0)
     Hand.speed = 120
@@ -58,7 +56,6 @@ end
 
 function Hand.draw()
     love.graphics.setColor(255,255,255)
-    -- love.graphics.draw(Hand.img, Hand.pos.x - Hand.ofs.x, Hand.pos.y - Hand.ofs.y)
     local x,y = Hand.pos.x - Hand.ofs.x, Hand.pos.y - Hand.ofs.y
     if Hand.pressing then
         Hand.pushAnim:draw(x, y)
