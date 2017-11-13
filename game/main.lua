@@ -1,5 +1,3 @@
-require "lib/livecode"
-
 function love.load()
     init()
     reset()

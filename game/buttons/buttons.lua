@@ -224,7 +224,7 @@ function Buttons.resetBlinkLogic()
     -- so the period has to start hi, get smaller over time, but we want to breath in between so...
     Buttons.blinkControl = {
         timer = 0,
-        nextTimeout = 2,
+        nextTimeout = 2 + General.startOverlayDelay,
         amp = 5,
     }
 

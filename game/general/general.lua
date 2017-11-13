@@ -1,10 +1,7 @@
 General = General or {}
 
 function General.init()
-    -- General.ovrb4 = love.graphics.newImage("img/overlay.png")
-    -- General.ovraf = love.graphics.newImage("img/overlay_after.png")
     General.overlay = love.graphics.newImage("img/overlay2.png")
-
 
     General.gameoverAnim = Anims.createWSprite("img/sheet_explosiongameover.png", 400, 300, 0.05)
     General.gameoverStatic = love.graphics.newImage("img/gameover.png")
@@ -13,6 +10,8 @@ function General.init()
         General.showGameoverStatic = true
         General.gameEnded = true
     end
+
+    General.startOverlayDelay = 1.5
 end
 
 function General.reset()
@@ -21,6 +20,8 @@ function General.reset()
     General.showGameoverStatic = false
 
     General.gameEnded = false
+
+    General.startOverlayTimer = General.startOverlayDelay
 end
 
 function General.doGameover()
@@ -35,6 +36,10 @@ function General.update(dt)
 
     if General.animGameover then
         General.gameoverAnim:update(dt)
+    end
+
+    if General.startOverlayTimer > 0 then
+        General.startOverlayTimer = General.startOverlayTimer - dt
     end
 end
 
@@ -60,10 +65,10 @@ end
 
 function General.drawOverlay()
     love.graphics.setColor(255,255,255)
-    -- if General.timer > 0 then
-    --     love.graphics.draw(General.ovrb4)
-    -- else
-    --     love.graphics.draw(General.ovraf)
-    -- end
     love.graphics.draw(General.overlay)
+
+    if General.startOverlayTimer > 0 then
+        love.graphics.setColor(0,0,0,General.startOverlayTimer / General.startOverlayDelay * 255)
+        love.graphics.rectangle("fill",0,0,400,300)
+    end
 end
